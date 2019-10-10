@@ -5,7 +5,7 @@ from django.views import View
 from django.core.paginator import Paginator
 from django.db.models import Q
 
-from article.models import Article
+from article.models import Article, ArticleTag
 from user.models import UserProfile
 # Create your views here.
 
@@ -13,9 +13,9 @@ from user.models import UserProfile
 # 获取归档列表
 def get_archives_list(all_article):
     # 归档
-    first_article = Article.objects.all().order_by('id').first()
+    new_article = Article.objects.all().order_by('-add_time').first()
     # 取最早的一条数据作为对比数据
-    year, month = first_article.add_time.year, first_article.add_time.month
+    year, month = new_article.add_time.year, new_article.add_time.month
     archives_list = []
     count = 0
     for article in all_article:
@@ -58,8 +58,10 @@ class IndexView(View):
         new_article = all_article[:4]
         # 获取归档列表
         archives_list = get_archives_list(all_article)
-        # 导航栏active
+        # 全局导航栏active
         cur_page = 'index'
+        ont_article = Article.objects.get(id=4)
+        print(ont_article.tag_set.all())
         return render(request, 'index.html', {
             'user': user,
             'page_art': page_article,

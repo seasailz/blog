@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>{% block title %}首页{% endblock %}</title>
+    <title>{% block title %}海涵的个人网站{% endblock %}</title>
     <link rel="icon" href="{% static 'images/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     {% block custom_css %}{% endblock %}
@@ -96,23 +96,28 @@
             <div class="panel-body">
                 <h4><a href="{% url 'article:detail' article.id %}">{{ article.title }}</a></h4>
                 <p><time>{{ article.add_time|date:'Y年m月d日' }}</time> by <a href="#">{{ article.author.username }}</a></p>
-                <p>{{ article.introduce }}</p>
+                <p>
+                    <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
+                    {% for tag in article.tag_set.all %}
+                    <span class="badge">{{ tag }}</span>
+                    {% endfor %}
+                </p>
             </div>
         </div><!-- 文章列表 -->
         {% endfor %}
 
-        <div class="col-md-5 col-md-offset-3">
+        <div class="col-md-6 col-md-offset-3">
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     {% if page_art.has_previous %}
                     <li><a href="?page={{ page_art.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
                     {% else %}
-                    <li><a href="?page={{ page_art.number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                    <li class="disabled"><span href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></span></li>
                     {% endif %}
 
                     {% for pgm in page_art.paginator.page_range %}
                         {% if page_art.number == pgm %}
-                            <li class="active"><a href="?page={{ pgm }}">{{ pgm }}</a></li>
+                            <li class="active"><span href="?page={{ pgm }}">{{ pgm }}</span></li>
                         {% else %}
                             <li><a href="?page={{ pgm }}">{{ pgm }}</a></li>
                         {% endif %}
@@ -121,7 +126,7 @@
                     {% if page_art.has_next %}
                     <li><a href="?page={{ page_art.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
                     {% else %}
-                    <li><a href="?page={{ page_art.number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+                    <li class="disabled"><span href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></span></li>
                     {% endif %}
                 </ul>
             </nav>
@@ -162,7 +167,10 @@
  ================================================== -->
 <div class="docs-footer">
     <div class="container">
-        <div><h6>海涵的个人博客网站</h6></div>
+        <div>
+            <h6>海涵的个人博客网站</h6>
+            <h6>Frame by <a href="https://www.djangoproject.com/">Django</a> and <a href="https://v3.bootcss.com/">Bootstrap</a>.</h6>
+        </div>
     </div>
 </div>
 

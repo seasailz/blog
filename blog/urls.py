@@ -18,7 +18,7 @@ from django.urls import path, include, re_path
 import xadmin
 from django.views.static import serve
 
-from blog.settings import MEDIA_ROOT
+from blog.settings import MEDIA_ROOT, STATIC_ROOT
 from article.views import IndexView
 from user.views import page_not_found, pag_error
 
@@ -37,7 +37,7 @@ urlpatterns = [
     # 配置media路径，使网页的图片能从后台输出显示出来
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}, name='media'),
     # setting中设置 debug=False后，配置路径使静态文件能加载
-    # re_path(r'^static/(?P<path>.*)$', serve, {'document_root': STATIC_ROOT}, name='static'),
+    re_path(r'^static/(?P<path>.*)$', serve, {'document_root': STATIC_ROOT}, name='static'),
 ]
 
 # 404页面配置
